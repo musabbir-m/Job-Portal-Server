@@ -27,18 +27,34 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const fresherCollection = client.db("jobsPortal").collection("fresherJobs");
-    const experiencedColleciton= client.db("jobsPortal").collection("experiencedJobs");
-    const companyCollection= client.db("jobsPortal").collection("Companies");
-    //load 6 fresher  jobs
+    const experiencedColleciton = client
+      .db("jobsPortal")
+      .collection("experiencedJobs");
+    const companyCollection = client.db("jobsPortal").collection("Companies");
+    //load  fresher  jobs
     app.get("/fresher", async (req, res) => {
       const query = {};
       const cursor = fresherCollection.find(query);
-      const jobs = await cursor.limit(6).toArray();
+      const jobs = await cursor.toArray();
       res.send(jobs);
     });
 
-    //load all fresher jobs
-    
+    //load experienced jobs
+    app.get("/experienced", async (req, res) => {
+      const query = {};
+      const cursor = experiencedColleciton.find(query);
+      const jobs = await cursor.toArray();
+      res.send(jobs);
+    });
+    //load local companises
+
+    app.get("/companybd", async (req, res) => {
+      const query = {};
+      const cursor = companyCollection.find(query);
+      const company = await cursor.toArray();
+      console.log(company);
+      res.send(company);
+    });
   } finally {
   }
 }
